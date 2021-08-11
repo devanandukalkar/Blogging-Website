@@ -14,7 +14,7 @@ Bootstrap(app)
 # Database configuration
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Heroku PostgreSQL connection
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL?sslmode=require').replace('postgres://', 'postgresql://')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL?sslmode=require')
 db = SQLAlchemy(app)
 
 # API to pull movies
