@@ -5,22 +5,20 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, NumberRange
 import requests
-from dotenv import load_dotenv
 import os
 
-load_dotenv('.env')
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('APP_SECRET_KEY')
+app.config['SECRET_KEY'] = os.environ.get('APP_SECRET_KEY')
 Bootstrap(app)
 
 # Database configuration
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///movie_collection.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
 
 # API to pull movies
 MOVIE_API_ENDPOINT = "https://api.themoviedb.org/3/search/movie"
-MOVIE_API_KEY = os.getenv('API_KEY')
+MOVIE_API_KEY = os.environ.get('API_KEY')
 
 
 # Create SQLite Movie Database
