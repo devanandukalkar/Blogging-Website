@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField
+from wtforms import StringField, SubmitField, FloatField
 from wtforms.validators import DataRequired, NumberRange
 import requests
 import os
@@ -14,7 +14,7 @@ Bootstrap(app)
 # Database configuration
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Heroku PostgreSQL connection
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///blog.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///movie_collection.db')
 if app.config['SQLALCHEMY_DATABASE_URI'].startswith("postgres://"):
     app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace("postgres://", "postgresql://", 1)
 
@@ -40,12 +40,12 @@ class Movie(db.Model):
         return f"{self.id} - {self.title} - {self.rating}"
 
 
-db.create_all()
+# db.create_all()
 
 
 # Form to edit movie rating
 class EditMovieForm(FlaskForm):
-    rating = IntegerField(label="Your Rating Out Of 10 e.g. 7.5", validators=[NumberRange(min=0, max=10)])
+    rating = FloatField(label="Your Rating Out Of 10 e.g. 7.5", validators=[NumberRange(min=0, max=10)])
     review = StringField(label="Your Review", validators=[DataRequired()])
     submit = SubmitField(label="Done")
 
