@@ -40,6 +40,9 @@ class Movie(db.Model):
         return f"{self.id} - {self.title} - {self.rating}"
 
 
+db.create_all()
+
+
 # Form to edit movie rating
 class EditMovieForm(FlaskForm):
     rating = IntegerField(label="Your Rating Out Of 10 e.g. 7.5", validators=[NumberRange(min=0, max=10.0)])
