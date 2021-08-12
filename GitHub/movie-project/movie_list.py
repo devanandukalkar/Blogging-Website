@@ -45,7 +45,7 @@ db.create_all()
 
 # Form to edit movie rating
 class EditMovieForm(FlaskForm):
-    rating = IntegerField(label="Your Rating Out Of 10 e.g. 7.5", validators=[NumberRange(min=0, max=10.0)])
+    rating = IntegerField(label="Your Rating Out Of 10 e.g. 7.5", validators=[NumberRange(max=10.0)])
     review = StringField(label="Your Review", validators=[DataRequired()])
     submit = SubmitField(label="Done")
 
