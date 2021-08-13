@@ -10,3 +10,4 @@ Werkzeug==2.0.1
 Flask_CKEditor==0.4.6
 gunicorn==20.1.0
 psycopg2-binary==2.9.1
+email-validator==1.1.3
