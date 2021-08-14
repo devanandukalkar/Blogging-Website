@@ -65,6 +65,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
+    role = db.Column(db.String(20), nullable=True)
     posts = relationship("BlogPost", back_populates="author")
     comments = relationship("Comment", back_populates="comment_author")
 
@@ -93,22 +94,11 @@ def blog_post_control(func):
     @wraps(func)
     def wrapper_function(*args, **kwargs):
         post = BlogPost.query.filter_by(id=kwargs["post_id"]).first()
-        if current_user.id == 1 or current_user.id == post.author_id:
+        if current_user.role == "blog_admin" or current_user.id == post.author_id:
             return func(*args, **kwargs)
         else:
             return abort(403)
     return wrapper_function
-
-
-# Decorator to restrict access to administrator
-def admin_only(func):
-    @wraps(func)
-    def admin_work(*args, **kwargs):
-        if current_user.id == 1:
-            return func(*args, **kwargs)
-        else:
-            return abort(403)
-    return admin_work
 
 
 @app.route('/')
@@ -130,7 +120,8 @@ def register():
                                                      )
             new_user = User(email=register_form.email.data,
                             password=hashed_password,
-                            name=register_form.name.data
+                            name=register_form.name.data,
+                            role="blog_user"
                             )
             db.session.add(new_user)
             db.session.commit()
@@ -251,14 +242,6 @@ def delete_post(post_id):
     db.session.delete(post_to_delete)
     db.session.commit()
     return redirect(url_for('get_all_posts'))
-
-
-@app.route("/users")
-@login_required
-@admin_only
-def get_users():
-    users = User.query.all()
-    return render_template("users.html", user_details=users, current_user=current_user)
 
 
 # Display profile information

@@ -26,7 +26,7 @@
                 {{ post.body|safe }}
                 <hr>
                 <!--  If user id is 1 then they can see the Edit Post button -->
-                {% if current_user.id == 1 or current_user.id == post.author_id %}
+                {% if current_user.id == "blog_admin" or current_user.id == post.author_id %}
                 <div class="clearfix">
                     <a class="btn btn-danger rounded-lg float-right" href="{{url_for('delete_post', post_id=post.id)}}"
                        role="button" onclick = "getConfirmation();">
